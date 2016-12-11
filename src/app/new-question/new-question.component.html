@@ -1,0 +1,5 @@
+<form [formGroup]="questionForm" (ngSubmit)="addQuestion($event)">
+  <input formControlName="title" type="text" placeholder="question title">
+  <input formControlName="description" type="text" placeholder="question description">
+  <button type="submit">Add</button>
+</form>

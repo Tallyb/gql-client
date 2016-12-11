@@ -1,0 +1,15 @@
+<div *ngIf="(obs | async)?.loading"> We are bringing your data....</div>
+<div>
+  <h2> List of Missions</h2>
+  <app-new-question></app-new-question>
+  <div *ngFor="let mission of (obs | async)?.data?.allMissions?.edges ">
+    <h4> Title: {{mission.node.title}} </h4>
+    <p> Id: {{mission.node._id}} </p>
+    <p> finished Date: {{mission.node.finishedDate | date}} Valid Until: {{mission.node.bookedDate}}</p>
+    <p> level: {{mission.node.level}} Valid Until: {{mission.node.validUntil}}</p>
+    <p> datas: {{mission.node?.missiondatas?.count}}</p>
+  </div>
+  <input type="checkbox" value="true" (change)="modeChanged($event)">Infinite scroll
+  <button (click)="nextPage()" [disabled]="false"> Next Page </button>
+  <p> Total: {{(obs | async)?.data?.allMissions?.count}}</p>
+</div>

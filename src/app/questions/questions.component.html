@@ -1,0 +1,11 @@
+<div *ngIf="!loading">
+  <h2> List of Questions</h2>
+  <app-new-question></app-new-question>
+  <div *ngFor="let question of data.allQuestions.edges">
+    <h4> Title: {{question.node.title}} </h4>
+    <p> Id: {{question.node._id}} votes: {{question.node.votes.count}}</p>
+    <p *ngIf="question.node.user"> {{question.node.user.username}}</p>
+  </div>
+  <input type="checkbox" value="true" (change)="modeChanged($event)">Infinite scroll
+  <button (click)="nextPage()"> Next Page {{data.allQuestions.count}}</button>
+</div>
