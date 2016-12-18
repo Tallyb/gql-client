@@ -2,9 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { ApolloModule } from 'angular2-apollo';
 import { RouterModule } from '@angular/router';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LocalStorageService, LOCAL_STORAGE_SERVICE_CONFIG } from 'angular-2-local-storage';
 
 import { appRoutes } from './routes';
@@ -13,7 +11,7 @@ import { AuthComponent } from './auth/auth.component';
 import { PageNotFoundComponent } from './page.not.found.component';
 import { QuestionsService } from './questions/questions.service';
 
-import { client } from './client';
+import { MyApolloModule } from './client';
 import { QuestionsComponent } from './questions/questions.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { NewQuestionComponent } from './new-question/new-question.component';
@@ -32,7 +30,7 @@ let localStorageServiceConfig = {
     QuestionsComponent,
     NavbarComponent,
     NewQuestionComponent,
-    MissionsComponent
+    MissionsComponent,
   ],
   imports: [
     BrowserModule,
@@ -40,8 +38,7 @@ let localStorageServiceConfig = {
     ReactiveFormsModule,
     HttpModule,
     RouterModule.forRoot(appRoutes),
-    ApolloModule.withClient(client),
-    NgbModule.forRoot()
+    MyApolloModule
   ],
   providers: [
     LocalStorageService,

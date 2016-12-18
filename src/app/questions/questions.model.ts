@@ -13,15 +13,6 @@ export const questionsQuery: Document = gql`
         cursor
         node {
             _id
-            date
-            votes {
-            count 
-            edges {
-                node {
-                username
-                }
-            }
-            }
             user {
             username 
             }

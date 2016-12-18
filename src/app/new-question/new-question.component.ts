@@ -65,7 +65,6 @@ function optimisticQuestion(mutationResult): Object {
       description: mutationResult.description,
       title: mutationResult.title,
       date: null,
-      votesRef: [],
       user: null
     }
   };

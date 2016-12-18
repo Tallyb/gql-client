@@ -5,15 +5,12 @@ import {
 } from '@angular/core';
 import {
   Angular2Apollo,
-  ApolloQueryObservable
+  ApolloQueryObservable,
 } from 'angular2-apollo';
 
 import {
   Subscription
 } from 'rxjs/Subscription';
-import {
-  Subject
-} from 'rxjs/Subject';
 
 import {
   questionsQuery
@@ -35,7 +32,7 @@ export class QuestionsComponent implements OnInit, OnDestroy {
 
   constructor(
     private apollo: Angular2Apollo
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.obs = this.apollo.watchQuery({

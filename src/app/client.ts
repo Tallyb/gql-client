@@ -1,65 +1,71 @@
-import ApolloClient, { createNetworkInterface } from 'apollo-client';
-import { Client } from 'subscriptions-transport-ws';
-import { print } from 'graphql-tag/printer';
+import ApolloClient, {
+    createNetworkInterface
+} from 'apollo-client';
+import {
+    Injectable, NgModule
+} from '@angular/core';
+
 import 'whatwg-fetch';
 
+import {Angular2Apollo, ApolloModule} from 'angular2-apollo';
+
 interface Result {
-    _id?: string;
-    __typename?: string;
-    node?: any;
+    _id ?: string;
+    __typename ?: string;
+    node ?: any;
+    cursor ?: string;
 }
 
-function addGraphQLSubscriptions(networkInterface: any, wsClient: Client) {
-    function subscribe(request: any, handler: any): number {
-        return wsClient.subscribe({
-            query: print(request.query),
-            variables: request.variables
-        }, handler);
-    }
-    function unsubscribe(id: number) {
-        wsClient.unsubscribe(id);
+@Injectable()
+export class Client {
+    client: ApolloClient;
+    private networkInterface: any;
+
+    constructor() {
+        this.networkInterface = createNetworkInterface({
+            uri: 'http://localhost:3000/graphql',
+            // uri: 'https://yoobic-loopback-dev.herokuapp.com/graphql',
+            // batchInterval: 10,
+            opts: {
+                credentials: 'same-origin',
+            }
+        });
+
+        this.networkInterface.use([{
+            applyMiddleware(req, next) {
+                if (!req.options.headers) {
+                    req.options.headers = {}; // Create the header object if needed.
+                }
+                // get the authentication token from local storage if it exists
+                req.options.headers.authorization = localStorage.getItem('token') || null;
+                next();
+            }
+        }]);
+
+        this.client = new ApolloClient({
+            networkInterface: this.networkInterface,
+            dataIdFromObject: (result: Result) => {
+                if (result.node && result.node._id && result.node.__typename) {
+                    return result.node.__typename + result.node._id;
+                }
+                return result;
+            }
+        });
     }
 
-    return Object.assign(networkInterface, subscribe, unsubscribe);
 }
 
-const networkInterface: any = createNetworkInterface({
-    uri: 'https://yoobic-loopback-dev.herokuapp.com/graphql',
-    // batchInterval: 10,
-    opts: {
-        credentials: 'same-origin',
-    }
-});
+@NgModule({
+    providers: [Client, {
+      provide: Angular2Apollo,
+      useFactory: (graphqlClient) => {
+        return new Angular2Apollo(graphqlClient.client);
+      },
+      deps: [Client]
+    }],
+    declarations: [],
+    exports: [ApolloModule],
+    imports: [ApolloModule]
 
-// const wsClient: Client = new Client('ws://localhost:3000');
-
-// const networkInterfaceWithSubscription: any = addGraphQLSubscriptions(networkInterface, wsClient);
-
-networkInterface.use([{
-    applyMiddleware(req, next) {
-        if (!req.options.headers) {
-            req.options.headers = {};  // Create the header object if needed.
-        }
-        // get the authentication token from local storage if it exists
-        req.options.headers.authorization = localStorage.getItem('token') || null;
-        next();
-    }
-}]);
-
-const client: ApolloClient = new ApolloClient({
-    networkInterface: networkInterface,
-    // dataIdFromObject: (result: Result) => {
-    //     let retval = null;
-    //     if (result.node) {
-    //         retval = result.node;
-    //     }
-    //     if (result._id && result.__typename) {
-    //         retval = result.__typename + result._id;
-    //     }
-    //     return retval;
-    // }
-});
-
-export {
-    client
-}
+})
+export class MyApolloModule {}
