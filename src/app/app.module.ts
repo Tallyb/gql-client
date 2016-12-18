@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 import { LocalStorageService, LOCAL_STORAGE_SERVICE_CONFIG } from 'angular-2-local-storage';
+import { ConfigService } from './common/config.service';
 
 import { appRoutes } from './routes';
 import { AppComponent } from './app.component';
@@ -41,6 +42,7 @@ let localStorageServiceConfig = {
     MyApolloModule
   ],
   providers: [
+    ConfigService,
     LocalStorageService,
     QuestionsService,
     {

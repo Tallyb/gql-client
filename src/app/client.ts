@@ -9,6 +9,8 @@ import 'whatwg-fetch';
 
 import {Angular2Apollo, ApolloModule} from 'angular2-apollo';
 
+import { ConfigService } from './common/config.service';
+
 interface Result {
     _id ?: string;
     __typename ?: string;
@@ -21,10 +23,9 @@ export class Client {
     client: ApolloClient;
     private networkInterface: any;
 
-    constructor() {
+    constructor(private config: ConfigService) {
         this.networkInterface = createNetworkInterface({
-            uri: 'http://localhost:3000/graphql',
-            // uri: 'https://yoobic-loopback-dev.herokuapp.com/graphql',
+            uri: this.config.getGraphQLUrl(),
             // batchInterval: 10,
             opts: {
                 credentials: 'same-origin',
