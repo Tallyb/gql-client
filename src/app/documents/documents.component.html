@@ -1,0 +1,16 @@
+<div *ngIf="(obs | async)?.loading"> We are bringing your data....</div>
+<div>
+  <h2> List of Documents</h2>
+  <app-new-question></app-new-question>
+  <div *ngFor="let document of (obs | async)?.data?.allDocuments?.edges">
+    <h4> Title: {{document.node.title}} </h4>
+  </div>
+  <div *ngFor="let file of (obs | async)?.data?.allFiles?.edges">
+    <h4> Title: {{file.node.title}} </h4>
+  </div>
+  <ul>
+    <li *ngFor="let i of pages" (click)="gotToPage(i)"> {{i+1}} </li>
+  </ul>
+  <button (click)="nextPage(page)" [disabled]="false"> Next Page </button>
+  <p> Total: {{(obs | async)?.data?.allMissions?.count}}</p>
+</div>

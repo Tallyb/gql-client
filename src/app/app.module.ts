@@ -17,6 +17,7 @@ import { QuestionsComponent } from './questions/questions.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { NewQuestionComponent } from './new-question/new-question.component';
 import { MissionsComponent } from './missions/missions.component';
+import { DocumentsComponent } from './documents/documents.component';
 
 let localStorageServiceConfig = {
   prefix: 'gql-client',
@@ -32,6 +33,7 @@ let localStorageServiceConfig = {
     NavbarComponent,
     NewQuestionComponent,
     MissionsComponent,
+    DocumentsComponent,
   ],
   imports: [
     BrowserModule,
