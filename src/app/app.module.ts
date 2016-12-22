@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
+import { Ng2PaginationModule } from 'ng2-pagination';
+
 import { LocalStorageService, LOCAL_STORAGE_SERVICE_CONFIG } from 'angular-2-local-storage';
 import { ConfigService } from './common/config.service';
 
@@ -41,7 +43,8 @@ let localStorageServiceConfig = {
     ReactiveFormsModule,
     HttpModule,
     RouterModule.forRoot(appRoutes),
-    MyApolloModule
+    MyApolloModule,
+    Ng2PaginationModule
   ],
   providers: [
     ConfigService,

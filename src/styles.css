@@ -3,3 +3,12 @@
 html {
   font-family: 'roboto';
 }
+.row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around
+}
+
+.container {
+    max-width: 40%;
+}

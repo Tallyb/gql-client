@@ -9,8 +9,8 @@ import {
 } from './page.not.found.component';
 
 import {
-    QuestionsComponent
-} from './questions/questions.component';
+    DocumentsComponent
+} from './documents/documents.component';
 
 import {
     MissionsComponent
@@ -23,15 +23,15 @@ const appRoutes: Routes = [{
         mode: 'login'
     }
 }, {
-    path: 'questions',
-    component: QuestionsComponent
+    path: 'documents',
+    component: DocumentsComponent
 }, {
     path: 'missions',
     component: MissionsComponent
 }, {
     path: '',
     pathMatch: 'full',
-    redirectTo: '/questions'
+    redirectTo: '/documents'
 }, {
     path: '**',
     component: PageNotFoundComponent

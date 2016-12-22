@@ -1,16 +1,31 @@
-<div *ngIf="(obs | async)?.loading"> We are bringing your data....</div>
-<div>
-  <h2> List of Documents</h2>
-  <app-new-question></app-new-question>
-  <div *ngFor="let document of (obs | async)?.data?.allDocuments?.edges">
-    <h4> Title: {{document.node.title}} </h4>
+<div *ngIf="loading"> We are bringing your data....</div>
+<button (click)="goHome()">Home</button>
+<div class="row">
+  <div class="container" *ngIf="!loading">
+    <h2>Folders ({{data?.allFolders?.count}})</h2>
+    <div *ngFor="let document of data?.allFolders?.edges | paginate: { id: 'folders',
+                                                        itemsPerPage: pageSize,
+                                                        currentPage: foldersPagination.page,
+                                                        totalItems: totalFolders }">
+      <p (click)="getFolder(document)"> 
+        {{document.node.name}} (folders: {{document.node.folders.count}} files: {{document.node.files.count}})
+      </p>
+    </div>
+    <pagination-controls id="folders" (pageChange)="goToFoldersPage($event)" maxSize="6" directionLinks="true">
+    </pagination-controls>
+
   </div>
-  <div *ngFor="let file of (obs | async)?.data?.allFiles?.edges">
-    <h4> Title: {{file.node.title}} </h4>
+  <div *ngIf="!loading" class="container">
+    <h2>Files ({{data?.allFiles?.count}})</h2>
+    <div *ngFor="let file of data?.allFiles?.edges | paginate: { id: 'files',
+                                                        itemsPerPage: pageSize,
+                                                        currentPage: foldersPagination.page,
+                                                        totalItems: totalFolders }">
+      <p> {{file.node._filename}} ({{file.node.size}}) </p>
+    </div>
+    <pagination-controls id="files" (pageChange)="goToFilesPage($event)" maxSize="6" directionLinks="true">
+    </pagination-controls>
+
   </div>
-  <ul>
-    <li *ngFor="let i of pages" (click)="gotToPage(i)"> {{i+1}} </li>
-  </ul>
-  <button (click)="nextPage(page)" [disabled]="false"> Next Page </button>
-  <p> Total: {{(obs | async)?.data?.allMissions?.count}}</p>
 </div>
+

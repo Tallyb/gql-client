@@ -45,12 +45,12 @@ export class Client {
 
         this.client = new ApolloClient({
             networkInterface: this.networkInterface,
-            dataIdFromObject: (result: Result) => {
-                if (result.node && result.node._id && result.node.__typename) {
-                    return result.node.__typename + result.node._id;
-                }
-                return result;
-            }
+            // dataIdFromObject: (result: Result) => {
+            //     if (result.node && result.node._id && result.node.__typename) {
+            //         return result.node.__typename + result.node._id;
+            //     }
+            //     return result;
+            // }
         });
     }
 
