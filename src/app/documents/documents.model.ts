@@ -1,18 +1,11 @@
 import { Document } from 'graphql';
-
 import gql from 'graphql-tag';
 
-export const topQuery: Document = gql`
- query documents($firstFolders: Int, $jumpFolders: Int, $where:JSON,
-$orderFolders:String, $firstFiles: Int, $jumpFiles: Int,
-$orderFiles:String) {
-  allFolders (first: $firstFolders, jump: $jumpFolders, orderBy: $orderFolders, where: $where) {
+export const fragments = gql`
+  
+  fragment foldersData on FoldersConnection {
     count
-    pageInfo {
-      hasNextPage
-    }
     edges {
-      cursor
       node {
         _id
         name
@@ -24,23 +17,33 @@ $orderFiles:String) {
         }
       }
     }
-    
-  }
-  allFiles (first: $firstFiles, jump: $jumpFiles, orderBy: $orderFiles, where: $where) {
-    count 
-    pageInfo {
-      hasNextPage
-    }
+}
+
+fragment filesData on FilesConnection {
+    count
     edges {
       node {
         _id
         _filename
         size
-
       }
     }
-  }
 }
+`;
+
+export const topQuery: Document = gql`
+ query documents($firstFolders: Int, $jumpFolders: Int, $where:JSON,
+$orderFolders:String, $firstFiles: Int, $jumpFiles: Int,
+$orderFiles:String) {
+  allFolders (first: $firstFolders, jump: $jumpFolders, orderBy: $orderFolders, where: $where) {
+    ...foldersData
+  }
+  allFiles (first: $firstFiles, jump: $jumpFiles, orderBy: $orderFiles, where: $where) {
+      ...filesData
+  }
+  }
+  ${fragments}
+
 `;
 
 export const folderQuery = gql`
@@ -48,24 +51,12 @@ export const folderQuery = gql`
       $orderFolders:String, $firstFiles: Int, $jumpFiles: Int, $orderFiles:String){
       Folders (_id: $id){
         files (first: $firstFiles, jump: $jumpFiles, orderBy: $orderFiles, where: $where) {
-          count 
-          edges {
-            node {
-              _filename
-              _id
-              size
-            }
-          }
+          ...filesData
         }
         folders (first: $firstFolders, jump: $jumpFolders, orderBy: $orderFolders, where: $where) {
-          count
-          edges {
-            node {
-              _id
-              name
-            }
-          }
+          ...foldersData
         }    
       }
     }
+    ${fragments}
 `;

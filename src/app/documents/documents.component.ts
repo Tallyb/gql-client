@@ -7,7 +7,7 @@ import {
 
 import { Subscription } from 'rxjs/Subscription';
 
-import { folderQuery, topQuery } from './documents.model';
+import { folderQuery, topQuery, fragments } from './documents.model';
 
 
 const TOP_LEVEL = {or: [{ folder: { exists: false }}, {folder: { eq: ''}}]};
@@ -20,7 +20,7 @@ const TOP_LEVEL = {or: [{ folder: { exists: false }}, {folder: { eq: ''}}]};
 
 export class DocumentsComponent implements OnInit, OnDestroy {
   public loading: boolean = true;
-  public pageSize: number = 3;
+  public pageSize: number = 25;
   public obs: ApolloQueryObservable<any>;
   public sub: Subscription;
   public where: any = TOP_LEVEL;
@@ -56,7 +56,7 @@ export class DocumentsComponent implements OnInit, OnDestroy {
         orderFiles: this.files.order,
         id: undefined
     };
-    if (this.path.length === 1 ) {
+    if (_.isUndefined(_.last(this.path)._id)) {
       query = topQuery;
       this.where = TOP_LEVEL;
     } else {
@@ -95,7 +95,6 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   }
 
   public goToFolder(index: number) {
-    console.log(index, this.path);
     this.path = _.take(this.path, index + 1);
     this.folders.page = 1;
     this.files.page = 1;
