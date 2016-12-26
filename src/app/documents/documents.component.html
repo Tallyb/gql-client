@@ -1,14 +1,16 @@
 <div *ngIf="loading"> We are bringing your data....</div>
-<button (click)="goHome()">Home</button>
+<ul class="breadcrumb">
+  <li *ngFor="let p of path; let i = index;" (click)="goToFolder(i)"> {{p.name}} </li>
+</ul>
 <div class="row">
   <div class="container" *ngIf="!loading">
-    <h2>Folders ({{data?.allFolders?.count}})</h2>
-    <div *ngFor="let document of data?.allFolders?.edges | paginate: { id: 'folders',
+    <h2>Folders ({{folders.total}})</h2>
+    <div *ngFor="let folder of folders.data | paginate: { id: 'folders',
                                                         itemsPerPage: pageSize,
-                                                        currentPage: foldersPagination.page,
-                                                        totalItems: totalFolders }">
-      <p (click)="getFolder(document)"> 
-        {{document.node.name}} (folders: {{document.node.folders.count}} files: {{document.node.files.count}})
+                                                        currentPage: folders.page,
+                                                        totalItems: folders.total }">
+      <p (click)="loadFolder(folder)"> 
+        {{folder.node.name}} (folders: {{folder.node.folders.count}} files: {{folder.node.files.count}})
       </p>
     </div>
     <pagination-controls id="folders" (pageChange)="goToFoldersPage($event)" maxSize="6" directionLinks="true">
@@ -16,11 +18,11 @@
 
   </div>
   <div *ngIf="!loading" class="container">
-    <h2>Files ({{data?.allFiles?.count}})</h2>
-    <div *ngFor="let file of data?.allFiles?.edges | paginate: { id: 'files',
+    <h2>Files ({{files.total}})</h2>
+    <div *ngFor="let file of files.data | paginate: { id: 'files',
                                                         itemsPerPage: pageSize,
-                                                        currentPage: foldersPagination.page,
-                                                        totalItems: totalFolders }">
+                                                        currentPage: files.page,
+                                                        totalItems: files.total }">
       <p> {{file.node._filename}} ({{file.node.size}}) </p>
     </div>
     <pagination-controls id="files" (pageChange)="goToFilesPage($event)" maxSize="6" directionLinks="true">
