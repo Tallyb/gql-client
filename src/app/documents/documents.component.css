@@ -3,10 +3,17 @@ ul.breadcrumb {
     list-style: none;
     background-color: #eee;
 }
-ul.breadcrumb li {display: inline;}
+ul.breadcrumb li {
+    display: inline;
+    cursor: pointer;
+}
 ul.breadcrumb li+li:before {
     padding: 8px;
     color: black;
     content: "/\00a0";
 }
-ul.breadcrumb li a {color: green;}
+ul.breadcrumb li a {
+    color: green;
+    }
+
+    

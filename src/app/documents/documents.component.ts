@@ -7,7 +7,7 @@ import {
 
 import { Subscription } from 'rxjs/Subscription';
 
-import { folderQuery, topQuery, fragments } from './documents.model';
+import { folderQuery, topQuery } from './documents.model';
 
 
 const TOP_LEVEL = {or: [{ folder: { exists: false }}, {folder: { eq: ''}}]};
@@ -29,15 +29,15 @@ export class DocumentsComponent implements OnInit, OnDestroy {
   public folders = {
     page: 1,
     order: 'name ASC',
-    total: undefined,
-    data: []
+    count: undefined,
+    edges: []
   };
 
   public files = {
     page: 1,
     order: '_filename ASC',
-    total: undefined,
-    data: []
+    count: undefined,
+    edges: []
   };
 
   constructor(
@@ -70,16 +70,16 @@ export class DocumentsComponent implements OnInit, OnDestroy {
     this.sub = this.obs.subscribe(res => {
       this.loading = false;
       if (res.data && res.data.Folders) { // one folder query
-        this.folders.data = res.data.Folders.folders.edges;
-        this.folders.total = res.data.Folders.folders.count;
-        this.files.data = res.data.Folders.files.edges;
-        this.files.total = res.data.Folders.files.count;
+        this.folders.edges = res.data.Folders.folders.edges;
+        this.folders.count = res.data.Folders.folders.count;
+        this.files.edges = res.data.Folders.files.edges;
+        this.files.count = res.data.Folders.files.count;
       }
       if (res.data && res.data.allFolders) { // top level query
-        this.folders.data = res.data.allFolders.edges;
-        this.folders.total = res.data.allFolders.count;
-        this.files.data = res.data.allFiles.edges;
-        this.files.total = res.data.allFiles.count;
+        this.folders.edges = res.data.allFolders.edges;
+        this.folders.count = res.data.allFolders.count;
+        this.files.edges = res.data.allFiles.edges;
+        this.files.count = res.data.allFiles.count;
       }
     });
   }

@@ -4,11 +4,12 @@
 </ul>
 <div class="row">
   <div class="container" *ngIf="!loading">
-    <h2>Folders ({{folders.total}})</h2>
-    <div *ngFor="let folder of folders.data | paginate: { id: 'folders',
+    <h2>Folders ({{folders.count}})</h2>
+    <div *ngFor="let folder of folders.edges | paginate: { id: 'folders',
                                                         itemsPerPage: pageSize,
                                                         currentPage: folders.page,
-                                                        totalItems: folders.total }">
+                                                        totalItems: folders.count }"
+        class="pointer">
       <p (click)="loadFolder(folder)"> 
         {{folder.node.name}} (folders: {{folder.node.folders.count}} files: {{folder.node.files.count}})
       </p>
@@ -18,11 +19,11 @@
 
   </div>
   <div *ngIf="!loading" class="container">
-    <h2>Files ({{files.total}})</h2>
-    <div *ngFor="let file of files.data | paginate: { id: 'files',
+    <h2>Files ({{files.count}})</h2>
+    <div *ngFor="let file of files.edges | paginate: { id: 'files',
                                                         itemsPerPage: pageSize,
                                                         currentPage: files.page,
-                                                        totalItems: files.total }">
+                                                        totalItems: files.count }">
       <p> {{file.node._filename}} ({{file.node.size}}) </p>
     </div>
     <pagination-controls id="files" (pageChange)="goToFilesPage($event)" maxSize="6" directionLinks="true">
