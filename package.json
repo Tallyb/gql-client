@@ -36,7 +36,7 @@
     "subscriptions-transport-ws": "^0.3.1",
     "ts-helpers": "^1.1.1",
     "typed-graphql": "^1.0.2",
-    "zone.js": "^0.6.23"
+    "zone.js": "^0.6.26"
   },
   "devDependencies": {
     "@angular/compiler-cli": "2.2.1",
